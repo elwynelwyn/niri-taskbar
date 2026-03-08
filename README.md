@@ -11,7 +11,19 @@ least as of Waybar 0.12.0).
 
 ## Installation
 
-At the moment, this needs to built from source. (If you do package it for a
+If you package niri-taskbar for another distro/OS, please let me know and I'll
+update the README.
+
+### Arch Linux
+
+@coreymwamba has kindly packaged this as [the `waybar-niri-taskbar` package in
+the AUR][aur].
+
+### From source
+
+Users of other distributions and OSes will need to build from source.
+
+At the moment, this needs to built from source.
 distro, let me know and I'll update the README.)
 
 ### Requirements
@@ -162,6 +174,7 @@ demonstrated above, you could add a border highlight like so:
 }
 ```
 
+[aur]: https://aur.archlinux.org/packages/waybar-niri-taskbar
 [cffi]: https://github.com/Alexays/Waybar/wiki/Module:-CFFI
 [niri]: https://github.com/YaLTeR/niri
 [style]: https://github.com/Alexays/Waybar/wiki/Styling
