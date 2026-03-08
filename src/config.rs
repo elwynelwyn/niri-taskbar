@@ -14,14 +14,16 @@ pub struct Config {
     #[serde(default)]
     show_all_outputs: bool,
     #[serde(default)]
-    orientation: TaskbarOrientation
+    orientation: TaskbarOrientation,
+    #[serde(default)]
+    display_mode: DisplayMode,
 }
 
 #[derive(Debug, Copy, Clone, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum TaskbarOrientation {
     Horizontal,
-    Vertical
+    Vertical,
 }
 
 impl Default for TaskbarOrientation {
@@ -42,6 +44,17 @@ pub struct Notifications {
     use_fuzzy_matching: bool,
 }
 
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "snake_case")]
+#[derive(Default)]
+pub enum DisplayMode {
+    Everything,
+    #[default]
+    ByOutput,
+    ByWorkspace,
+    WorkspaceButtons,
+}
+
 impl Default for Notifications {
     fn default() -> Self {
         Self {
@@ -55,6 +68,12 @@ impl Default for Notifications {
 
 fn default_true() -> bool {
     true
+}
+
+pub struct DisplayVars {
+    pub filter_by_output: bool,
+    pub filter_by_workspace: bool,
+    pub workspace_buttons: bool,
 }
 
 impl Config {
@@ -111,8 +130,29 @@ impl Config {
         self.notifications.use_fuzzy_matching
     }
 
-    pub fn show_all_outputs(&self) -> bool {
-        self.show_all_outputs
+    pub fn display_vars(&self) -> DisplayVars {
+        match self.display_mode {
+            DisplayMode::Everything => DisplayVars {
+                filter_by_output: false,
+                filter_by_workspace: false,
+                workspace_buttons: false,
+            },
+            DisplayMode::ByOutput => DisplayVars {
+                filter_by_output: true,
+                filter_by_workspace: false,
+                workspace_buttons: false,
+            },
+            DisplayMode::ByWorkspace => DisplayVars {
+                filter_by_output: true,
+                filter_by_workspace: true,
+                workspace_buttons: false,
+            },
+            DisplayMode::WorkspaceButtons => DisplayVars {
+                filter_by_output: true,
+                filter_by_workspace: false,
+                workspace_buttons: true,
+            },
+        }
     }
 
     pub fn orientation(&self) -> TaskbarOrientation {
